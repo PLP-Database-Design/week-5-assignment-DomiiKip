@@ -27,17 +27,57 @@ This demonstrates the cconnection of MySQL database and Node.js to create a simp
 
    
    // Question 1 goes here
-
+// Retrieve all patients
+app.get('/patients', (req, res) => {
+  const sql = 'SELECT patient_id, first_name, last_name, date_of_birth FROM patients';
+  db.query(sql, (err, results) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.json(results);
+    }
+  });
+});
 
    // Question 2 goes here
-
+// Retrieve all providers
+app.get('/providers', (req, res) => {
+  const sql = 'SELECT first_name, last_name, provider_specialty FROM providers';
+  db.query(sql, (err, results) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.json(results);
+    }
+  });
+});
 
    // Question 3 goes here
-
-
+// Filter patients by first name
+app.get('/patients/:first_name', (req, res) => {
+  const { first_name } = req.params;
+  const sql = 'SELECT * FROM patients WHERE first_name = ?';
+  db.query(sql, [first_name], (err, results) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.json(results);
+    }
+  });
+});
    // Question 4 goes here
-
-   
+// Retrieve all providers by their specialty
+app.get('/providers/specialty/:specialty', (req, res) => {
+  const { specialty } = req.params;
+  const sql = 'SELECT * FROM providers WHERE provider_specialty = ?';
+  db.query(sql, [specialty], (err, results) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.json(results);
+    }
+  });
+});
 
    // listen to the server
    const PORT = 3000
